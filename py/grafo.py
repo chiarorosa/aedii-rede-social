@@ -1,6 +1,9 @@
 """Grafo de seguidores e sugestão de pessoas para seguir."""
 
-from py.heap import HeapMaxima
+try:
+    from .heap import HeapMaxima
+except ImportError:
+    from heap import HeapMaxima
 
 
 class GrafoSeguidores:
