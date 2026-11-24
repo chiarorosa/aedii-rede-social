@@ -35,6 +35,10 @@ class GrafoSeguidores:
         if quantidade <= 0:
             return []
 
+        usuarios_por_id = [None] * (self.total_usuarios + 1)
+        for registro in usuarios:
+            usuarios_por_id[int(registro[0])] = registro
+
         ja_segue = [False] * (self.total_usuarios + 1)
         contagens = [0] * (self.total_usuarios + 1)
         candidatos = []
@@ -52,7 +56,7 @@ class GrafoSeguidores:
 
         heap = HeapMaxima()
         for candidato in candidatos:
-            registro = usuarios[candidato - 1]
+            registro = usuarios_por_id[candidato]
             heap.inserir([contagens[candidato], registro[1], candidato])
 
         sugestoes = []
@@ -60,7 +64,7 @@ class GrafoSeguidores:
             melhor = heap.remover_maximo()
             if melhor is None:
                 break
-            registro = usuarios[melhor[2] - 1]
+            registro = usuarios_por_id[melhor[2]]
             sugestoes.append([melhor[2], registro[1], registro[2], melhor[0]])
         return sugestoes
 

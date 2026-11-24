@@ -1,17 +1,26 @@
 """Menu das funcionalidades de sugestão, posts por data e ranking."""
 
-import aedlib
-
-from avl import ArvoreAVLPosts
-from grafo import GrafoSeguidores
-from ordenacao import gerar_ranking
+try:
+    from . import aedlib
+    from .avl import ArvoreAVLPosts
+    from .grafo import GrafoSeguidores
+    from .ordenacao import gerar_ranking
+except ImportError:
+    import aedlib
+    from avl import ArvoreAVLPosts
+    from grafo import GrafoSeguidores
+    from ordenacao import gerar_ranking
 
 
 def data_valida(data):
     """Verifica se uma string está no formato AAAA-MM-DD e representa uma data."""
     if len(data) != 10 or data[4] != "-" or data[7] != "-":
         return False
-    if not (data[:4].isdigit() and data[5:7].isdigit() and data[8:].isdigit()):
+    if not (
+        data[:4].isascii() and data[:4].isdigit()
+        and data[5:7].isascii() and data[5:7].isdigit()
+        and data[8:].isascii() and data[8:].isdigit()
+    ):
         return False
 
     ano = int(data[:4])
@@ -28,9 +37,12 @@ def data_valida(data):
 
 def validar_quantidade(texto):
     """Converte uma quantidade positiva; retorna ``None`` para entrada inválida."""
-    if not texto.isdigit():
+    if not texto.isascii() or not texto.isdigit():
         return None
-    quantidade = int(texto)
+    try:
+        quantidade = int(texto)
+    except ValueError:
+        return None
     if quantidade <= 0:
         return None
     return quantidade

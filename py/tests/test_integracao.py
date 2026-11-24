@@ -28,9 +28,11 @@ class TestIntegracaoMenu(unittest.TestCase):
         self.assertTrue(data_valida("2025-01-01"))
         self.assertFalse(data_valida("2025-13-01"))
         self.assertFalse(data_valida("2025-02-29"))
+        self.assertFalse(data_valida("2025-0²-01"))
         self.assertEqual(validar_quantidade("3"), 3)
         self.assertIsNone(validar_quantidade("0"))
         self.assertIsNone(validar_quantidade("abc"))
+        self.assertIsNone(validar_quantidade("²"))
 
     def test_mostra_usuario_inexistente_na_sugestao(self):
         """A opção de sugestão deve informar quando o @usuario não existe."""

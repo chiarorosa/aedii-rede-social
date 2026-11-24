@@ -49,6 +49,17 @@ class TestGrafoSeguidores(unittest.TestCase):
         """Sem seguidos diretos não há pessoas a duas conexões de distância."""
         self.assertEqual(self.grafo.sugerir("@fabi", 3, self.usuarios), [])
 
+    def test_mantem_identidade_quando_lista_de_usuarios_esta_fora_de_ordem(self):
+        """O ID, o @ e o nome da sugestão devem vir do mesmo registro."""
+        usuarios_fora_de_ordem = [
+            self.usuarios[3], self.usuarios[0], self.usuarios[4],
+            self.usuarios[2], self.usuarios[1], self.usuarios[5],
+        ]
+
+        sugestoes = self.grafo.sugerir("@ana", 1, usuarios_fora_de_ordem)
+
+        self.assertEqual(sugestoes, [[4, "@duda", "Duda", 2]])
+
 
 if __name__ == "__main__":
     unittest.main()
